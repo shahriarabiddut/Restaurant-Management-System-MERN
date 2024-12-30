@@ -20,10 +20,10 @@ const imageData = [
 const Banner = () => {
   return (
     <>
-        <Carousel>
+        <Carousel >
             {imageData.map((item, index) => (
                 <div key={index}>
-                <img src={item.src} alt={`Image ${index + 1}`} />
+                <img src={item.src} alt={`Image ${index + 1}`} className='max-h-screen'/>
                 {/* <p className="legend">{item.legend}</p> */}
                 </div>
             ))}
