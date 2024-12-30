@@ -20,7 +20,7 @@ const imageData = [
     { src: img3, alt: " soups " },
     { src: img4, alt: " desert " },
     { src: img5, alt: " salad " },
-  ];
+];
 
 const Category = () => {
   return (
