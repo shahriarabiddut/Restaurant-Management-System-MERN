@@ -1,9 +1,11 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const Navbar = () => {
     const navOptions = <>
-    <li><a>Item 1</a></li>
-        <li>
+        <li><NavLink to={'/'}>Home</NavLink></li>
+        <li><NavLink to={'/menu'}>Menu</NavLink></li>
+        {/* <li>
           <details>
             <summary>Parent</summary>
             <ul className="p-2 bg-black">
@@ -11,7 +13,7 @@ const Navbar = () => {
               <li className='hover:text-black hover:bg-white'><a>Submenu 2</a></li>
             </ul>
           </details>
-        </li>
+        </li> */}
         <li><a>Item 3</a></li>
           </>
   return (

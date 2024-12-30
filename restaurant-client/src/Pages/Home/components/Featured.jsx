@@ -5,7 +5,7 @@ import featuredImage from '../../../assets/home/featured.jpg'
 const Featured = () => {
     
   return (
-    <section className='featured-item'>
+    <section className='featured-item py-1'>
         <SectionTitle subHeading={' check it out '} heading={'Featured Item'} />
         <div className='md:flex justify-center items-center gap-8 py-20 px-36'>
             <div><img src={featuredImage} alt="" className='p-5 rounded-3xl'/></div>
