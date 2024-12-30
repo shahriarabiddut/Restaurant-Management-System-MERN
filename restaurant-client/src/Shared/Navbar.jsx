@@ -5,6 +5,7 @@ const Navbar = () => {
     const navOptions = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
         <li><NavLink to={'/menu'}>Menu</NavLink></li>
+        <li><NavLink to={'/order'}>Order</NavLink></li>
         {/* <li>
           <details>
             <summary>Parent</summary>
@@ -14,7 +15,6 @@ const Navbar = () => {
             </ul>
           </details>
         </li> */}
-        <li><a>Item 3</a></li>
           </>
   return (
     <><div className="navbar fixed z-10 bg-opacity-30 bg-black text-white max-w-screen-xl">
@@ -36,7 +36,7 @@ const Navbar = () => {
         </div>
         <ul
           tabIndex={0}
-          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+          className="menu menu-sm dropdown-content bg-black rounded-box z-[1] mt-3 w-52 p-2 shadow">
           {navOptions}
         </ul>
       </div>
