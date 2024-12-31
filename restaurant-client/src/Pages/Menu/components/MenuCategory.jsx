@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import MenuItem from '../../../Shared/MenuItem';
 import useMenu from '../../../hooks/useMenu';
 
@@ -13,7 +14,9 @@ const MenuCategory = ({selectedCategory}) => {
             }
         </div>
         <div className="flex justify-center pb-5">
-        <button className='btn btn-outline border-0 border-b-4 mt-4 mx-auto'> ORDER YOUR FAVOURITE FOOD </button>
+          <Link to={`/order/${selectedCategory}`}>
+            <button className='btn btn-outline border-0 border-b-4 mt-4 mx-auto'> ORDER YOUR FAVOURITE FOOD </button>
+          </Link>
         </div>
     </section>
   )
