@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import Footer from '../../Shared/Footer';
-import Navbar from '../../Shared/Navbar';
 
+import { useParams } from 'react-router-dom';
 import orderCover from '../../assets/shop/order.jpg';
 import Cover from '../../Shared/Cover';
 import FoodCategory from './components/FoodCategory';
-import './Order.css'
-import { useParams } from 'react-router-dom';
+import './Order.css';
 
 const categories = ['salad','pizza','soup','dessert','drinks']
 
@@ -24,7 +22,6 @@ const Order = () => {
     <Helmet>
         <title>Order | {import.meta.env.VITE_NAME}</title>
     </Helmet>
-    <Navbar/>
     <Cover img={orderCover} title={'Our Shop'} tagline={'Would you like to try a dish? Order Food'} big={true}/>
     {/* Tabs */}
     <Tabs className={'py-16'} selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
@@ -54,7 +51,6 @@ const Order = () => {
         </TabPanel>
     </Tabs>
     {/* Ends */}
-    <Footer/>
     </>
   )
 }
