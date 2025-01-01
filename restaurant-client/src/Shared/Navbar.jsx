@@ -1,22 +1,40 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import { AuthContext } from '../providers/AuthProvider'
 
 const Navbar = () => {
-    const navOptions = <>
-        <li><NavLink to={'/'}>Home</NavLink></li>
-        <li><NavLink to={'/menu'}>Menu</NavLink></li>
-        <li><NavLink to={'/order/salad'}>Order</NavLink></li>
-        <li><NavLink to={'/login'}>Login</NavLink></li>
-        {/* <li>
-          <details>
-            <summary>Parent</summary>
-            <ul className="p-2 bg-black">
-              <li className='hover:text-black hover:bg-white'><a>Submenu 1</a></li>
-              <li className='hover:text-black hover:bg-white'><a>Submenu 2</a></li>
-            </ul>
-          </details>
-        </li> */}
-          </>
+  const {user,logOut} = useContext(AuthContext);
+  const handleLogout = ()=>{
+    logOut()
+    .then(()=>console.log('Logged Out'))
+    .catch((error)=>console.log(error));
+  }
+  const navOptions = <>
+      <li><NavLink to={'/'}>Home</NavLink></li>
+      <li><NavLink to={'/menu'}>Menu</NavLink></li>
+      <li><NavLink to={'/order/salad'}>Order</NavLink></li>
+      {
+        user ? 
+        <>
+          <li><NavLink to={'/secret'}>Secret</NavLink></li>
+          <li><span className='bg-slate-400 mx-1'>{user?.displayName}</span></li>
+          <li><button className='bg-slate-400 mx-1' onClick={handleLogout}>LogOut</button></li>
+        </>
+        :
+        <>
+          <li><NavLink to={'/login'}>Login</NavLink></li>
+        </>
+      }
+      {/* <li>
+        <details>
+          <summary>Parent</summary>
+          <ul className="p-2 bg-black">
+            <li className='hover:text-black hover:bg-white'><a>Submenu 1</a></li>
+            <li className='hover:text-black hover:bg-white'><a>Submenu 2</a></li>
+          </ul>
+        </details>
+      </li> */}
+        </>
   return (
     <><div className="navbar fixed z-10 bg-opacity-30 bg-black text-white max-w-screen-xl">
     <div className="navbar-start">
