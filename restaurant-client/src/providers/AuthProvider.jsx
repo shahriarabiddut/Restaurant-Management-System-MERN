@@ -41,13 +41,25 @@ const AuthProvider = ({children}) => {
         }
     };
     // Show Modal of SweetAlert
-    const sweetAlert = (title='Sure!',message='Do you want to continue!',type='info',confirmedText=false)=>{
-        Swal.fire({
-            title: title,
-            text: message,
-            icon: type,
-            confirmButtonText: confirmedText
-          })
+    const sweetAlert = (title='Sure!',message='Do you want to continue!',type='info',confirmedText='Close')=>{
+        if(confirmedText!='Close'){
+            return Swal.fire({
+                title: title,
+                text: message,
+                icon: type,
+                confirmButtonText: confirmedText,
+                showCancelButton: true,
+                cancelButtonText: `Close`,
+              })
+        }else{
+            return Swal.fire({
+                title: title,
+                text: message,
+                icon: type,
+                confirmButtonText: confirmedText,
+              })
+        }
+        
     }
     // 
     useEffect(()=>{
