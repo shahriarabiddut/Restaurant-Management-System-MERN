@@ -1,24 +1,44 @@
 import React from 'react'
 import useAuth from "../hooks/useAuth";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import useCart from '../hooks/useCart';
 
 const FoodCard = ({item}) => {
-  const {image,name,recipe,price} = item;
-  const {user,sweetAlert} = useAuth();
+  const {_id,name,image,price,recipe} = item;
+  const {user,sweetAlert,showToast} = useAuth();
   const navigate = useNavigate();
-  const handleAddToCart = (food)=>{
+  const location = useLocation();
+  const axiosSecure = useAxiosSecure();
+  //
+  const [,refetch] = useCart()
+  const handleAddToCart = ()=>{
     if(user && user.email){
       // Todo: Send Data 
+      // console.log(food);
+      const cartItem = {
+        menuId : _id,
+        email : user.email,
+        name,image,price,
+      }
+      // console.log(cartItem);
+      axiosSecure.post('/carts',cartItem)
+      .then(res=>{
+        console.log(res);
+        if(res.data.insertedId){
+          showToast('Added To Cart','success');
+          // Refetch the cart items count
+          refetch()
+        }
+      })
+    }else{
       sweetAlert('You Are Not Logged In!','Please Login to Add to Cart','question','Login')
       .then((result)=>{
         if(result.isConfirmed){
           // alert('s')
-          navigate('/login')
+          navigate('/login' , {state : {from:location}})
         }
       })
-      console.log(food)
-    }else{
-
     }
   }
   return (
@@ -34,7 +54,7 @@ const FoodCard = ({item}) => {
             <h2 className="card-title">{name}</h2>
             <p>{recipe}</p>
             <div className="flex justify-center pb-5">
-              <button className='btn btn-outline border-0 border-b-4 border-b-orange-600 mt-4 mx-auto bg-[#cf9919ea]' onClick={()=>handleAddToCart(item)}> Add To Cart </button>
+              <button className='btn btn-outline border-0 border-b-4 border-b-orange-600 mt-4 mx-auto bg-[#cf9919ea]' onClick={handleAddToCart}> Add To Cart </button>
             </div>
         </div>
         </div>
