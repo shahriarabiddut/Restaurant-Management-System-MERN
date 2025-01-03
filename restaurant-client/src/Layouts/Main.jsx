@@ -8,11 +8,11 @@ const Main = () => {
   const noHeaderFooter = location.pathname.includes('login') || location.pathname.includes('signup');
   // console.log(noHeaderFooter);
   return (
-    <>
+    <section className='max-w-screen-xl mx-auto'>
       {noHeaderFooter ||  <Navbar/>}
         <Outlet/>
       {noHeaderFooter ||  <Footer/>}
-    </>
+    </section>
   )
 }
 
