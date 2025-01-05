@@ -34,9 +34,44 @@ async function run() {
     // DB
     const database = client.db(dbName);
     // DB Collections
+    const usersCollection = database.collection("users");
     const menuCollection = database.collection("menu");
     const reviewsCollection = database.collection("reviews");
     const cartsCollection = database.collection("carts");
+    // User Related API
+     
+    app.get('/users',async (req,res)=>{
+        const result = await usersCollection.find().toArray();
+        res.send(result);
+    })
+    app.post('/users',async (req,res)=>{
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    })
+    // Update Login info Using Patch
+    app.patch('/users',async (req,res)=>{
+      const {  lastSignInTime,email, name,photo } = req.body;
+      const filter = { email };
+      const updatedUserInfo = {
+        $set: {}
+      };
+      //if data provided then update
+      if (name) {
+        updatedUserInfo.$set.name = name;
+      }
+      if (photo) {
+        updatedUserInfo.$set.photo = photo;
+      }
+      if (lastSignInTime) {
+        updatedUserInfo.$set.lastSignInTime = lastSignInTime;
+      }
+      //
+      const result = await userCollection.updateOne(filter,updatedUserInfo);
+      console.log('Updated Info of User',updatedUserInfo.$set);
+      res.send(result);
+    })
+    // 
     app.get('/menu',async (req,res)=>{
         const result = await menuCollection.find().toArray();
         res.send(result);
