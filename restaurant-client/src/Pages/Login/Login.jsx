@@ -39,7 +39,7 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        // showToast('Invalid Email/Password','error');
+        showToast("Invalid Email/Password", "error");
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);

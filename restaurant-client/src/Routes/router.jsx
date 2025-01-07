@@ -8,7 +8,8 @@ import SignUp from "../Pages/SignUp/SignUp";
 import Secret from "../Shared/Secret";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../Layouts/Dashboard";
-import Cart from "../Pages/Dashboard/Cart/Cart";
+import Cart from "../Pages/Dashboard/User/Cart/Cart";
+import AllUsers from "../Pages/Dashboard/Admin/AllUsers/AllUsers";
 
 const router = createBrowserRouter([
   {
@@ -70,12 +71,18 @@ const router = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: "/dashboard/addreview",
+        path: "/dashboard/addReview",
         element: <h1>Add Review</h1>,
       },
       {
-        path: "/dashboard/mybookings",
+        path: "/dashboard/myBookings",
         element: <h1> My Bookings </h1>,
+      },
+      // Admin Routes
+
+      {
+        path: "/dashboard/users",
+        element: <AllUsers />,
       },
     ],
   },

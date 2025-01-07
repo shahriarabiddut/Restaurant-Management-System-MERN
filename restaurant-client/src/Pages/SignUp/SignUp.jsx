@@ -27,11 +27,11 @@ const SignUp = () => {
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-      .then(() => {
+      .then((currentUser) => {
+        let createdAt = currentUser?.user?.metadata?.createdAt;
+        // console.log(currentUser.user, createdAt);
         updateUserProfile(data.name, data.photo)
           .then(() => {
-            // console.log("Profile Info Updated!");
-            const createdAt = currentUser?.metadata?.createdAt;
             const userInfo = {
               name: data.name,
               email: data.email,

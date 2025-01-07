@@ -1,9 +1,11 @@
 require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // Variables
 const port = process.env.PORT || 3000;
+const secret = process.env.JWTSECRET || '7d6156787bbbc8678e6a1b7be51f4b776814798fd4ed827f0d6d5cb108cb7b58f16170c8700b7b1371d3174210535356279112bae8496e332da8f6acbf511631';
 
 // App
 const app = express();
@@ -46,7 +48,8 @@ async function run() {
     })
     app.post('/users',async (req,res)=>{
       const user = req.body;
-      const result = await usersCollection.insertOne(user);
+      const userModified = {...user,role:'user'};
+      const result = await usersCollection.insertOne(userModified);
       res.send(result);
     })
     // Update Login info Using Patch
@@ -67,11 +70,32 @@ async function run() {
         updatedUserInfo.$set.lastSignInTime = lastSignInTime;
       }
       //
-      const result = await userCollection.updateOne(filter,updatedUserInfo);
+      const result = await usersCollection.updateOne(filter,updatedUserInfo);
       console.log('Updated Info of User',updatedUserInfo.$set);
       res.send(result);
     })
-    // 
+    // Change Role : Admin / User
+    app.patch('/users/role/:id',async (req,res)=>{
+      const id = req.params.id;
+      const { role } = req.body;
+      const filter = {_id : new ObjectId(id)}
+      const updatedUserInfo = {
+        $set: {role}
+      };
+      const result = await usersCollection.updateOne(filter,updatedUserInfo);
+      console.log(`Updated User to ${role}`);
+      res.send(result);
+    })
+    // Delete API
+    app.delete('/users/:id',async (req,res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await usersCollection.deleteOne(query);
+      console.log('User deleted!')
+      res.send(result);
+    })
+
+    // MENU
     app.get('/menu',async (req,res)=>{
         const result = await menuCollection.find().toArray();
         res.send(result);

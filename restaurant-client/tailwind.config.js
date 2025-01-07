@@ -12,6 +12,9 @@ export default {
         "inter": ["Inter", "serif"],
         "cinzel": ["Cinzel", "serif"],
       },
+      colors:{
+        'primer':'#d1a054',
+      }
     },
   },
   plugins: [

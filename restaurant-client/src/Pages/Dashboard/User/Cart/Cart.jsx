@@ -1,9 +1,9 @@
 import React from "react";
-import useCart from "../../../hooks/useCart";
-import SectionTitle from "../../../components/SectionTitle";
+import useCart from "../../../../hooks/useCart";
+import SectionTitle from "../../../../components/SectionTitle";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const Cart = () => {
   const [cart, refetch] = useCart();
@@ -43,11 +43,11 @@ const Cart = () => {
         <div className="flex justify-between my-4 font-cinzel font-semibold">
           <h2 className="text-4xl">Total Orders: {cart.length}</h2>
           <h2 className="text-4xl">Total Price: ${totalPrice.toFixed(2)}</h2>
-          <button className="btn bg-[#d1a054]">Pay</button>
+          <button className="btn bg-primer">Pay</button>
         </div>
-        <div class="overflow-hidden rounded-t-2xl my-5">
-          <table class="table">
-            <thead class="bg-[#d1a054] text-xl text-white">
+        <div className="overflow-hidden rounded-t-2xl my-5">
+          <table className="table">
+            <thead className="bg-primer text-xl text-white">
               <tr>
                 <th>no.</th>
                 <th>Image</th>
