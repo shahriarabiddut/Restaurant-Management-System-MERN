@@ -4,7 +4,7 @@ import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import { getAdditionalUserInfo } from "firebase/auth";
 
-const SocialLogin = () => {
+const SocialLogin = ({ navigate, location, from }) => {
   const { googleSignIn, updateUserProfile, showToast } = useAuth();
   const axiosPublic = useAxiosPublic();
   // SignInTime Update
@@ -50,6 +50,7 @@ const SocialLogin = () => {
           //
         }
         signInTimeUpdate(currentUser, currentUser.email);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error);

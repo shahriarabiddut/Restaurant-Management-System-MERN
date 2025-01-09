@@ -12,9 +12,10 @@ import { GiNotebook, GiWallet } from "react-icons/gi";
 import { MdRateReview } from "react-icons/md";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 const Dashboard = () => {
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   return (
     <section className="flex bg-base-200 ">
       <div className="w-64 min-h-screen bg-primer">

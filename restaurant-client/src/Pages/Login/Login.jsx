@@ -130,7 +130,7 @@ const Login = () => {
             </p>
 
             <div className="divider">OR</div>
-            <SocialLogin />
+            <SocialLogin navigate={navigate} location={location} from={from} />
           </div>
         </div>
       </div>

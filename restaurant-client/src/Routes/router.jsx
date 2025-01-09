@@ -10,6 +10,8 @@ import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../Layouts/Dashboard";
 import Cart from "../Pages/Dashboard/User/Cart/Cart";
 import AllUsers from "../Pages/Dashboard/Admin/AllUsers/AllUsers";
+import AdminRoute from "./AdminRoute";
+import AddItems from "../Pages/Dashboard/Items/AddItems";
 
 const router = createBrowserRouter([
   {
@@ -55,34 +57,54 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/dashboard/home",
+        path: "home",
         element: <h1>Dashboard</h1>,
       },
       {
-        path: "/dashboard/reservation",
+        path: "reservation",
         element: <h1>reservation</h1>,
       },
       {
-        path: "/dashboard/payments",
+        path: "payments",
         element: <h1>Payment History</h1>,
       },
       {
-        path: "/dashboard/cart",
+        path: "cart",
         element: <Cart />,
       },
       {
-        path: "/dashboard/addReview",
+        path: "addReview",
         element: <h1>Add Review</h1>,
       },
       {
-        path: "/dashboard/myBookings",
+        path: "myBookings",
         element: <h1> My Bookings </h1>,
       },
       // Admin Routes
-
       {
-        path: "/dashboard/users",
-        element: <AllUsers />,
+        path: "adminHome",
+        element: (
+          <AdminRoute>
+            <h1>adminHome</h1>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "users",
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        ),
+      },
+      ,
+      {
+        path: "addItems",
+        element: (
+          <AdminRoute>
+            <AddItems />
+          </AdminRoute>
+        ),
       },
     ],
   },

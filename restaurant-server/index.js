@@ -40,12 +40,65 @@ async function run() {
     const menuCollection = database.collection("menu");
     const reviewsCollection = database.collection("reviews");
     const cartsCollection = database.collection("carts");
+
+    // JWT RELATED API
+    app.post('/jwt',async (req,res)=>{
+        const user = req.body;
+        const token = jwt.sign(user,secret,{expiresIn: '2h'})
+        res.send({token});
+    })
+    // MiddleWares : Verify Token
+    const verifyToken = (req,res,next)=>{
+      // console.log('Inside Verify token : ',req.headers.authorization);
+      if(!req.headers.authorization){
+        return res.status(401).send({message:'Unauthorized Access!'})
+      }
+      const token = req.headers.authorization.split(' ')[1];
+      // if(!token){
+      //   return res.status(401).send({message:'Unauthorized Access!'})
+      // }
+      jwt.verify(token,secret,(error,decoded)=>{
+        if(error){
+          return res.status(401).send({message:'Unauthorized Access!'})
+        }
+        req.decoded = decoded;
+        next();
+      })
+    }
+    //MiddleWares: Verfy Admin after Verify Token
+    const verifyAdmin = async (req,res,next)=>{
+      const email = req.decoded.email;
+      // console.log('Inside Admin Verify token : ',email);
+      const query = { email };
+      const user = await usersCollection.findOne(query);
+      const isAdmin = user?.role === 'admin';
+      if(!isAdmin){
+        return res.status(403).send({message:'Forbidden Access!'})
+      }
+      next();
+    }
     // User Related API
      
-    app.get('/users',async (req,res)=>{
+    app.get('/users',verifyToken,verifyAdmin,async (req,res)=>{
+      // console.log(req.headers);
         const result = await usersCollection.find().toArray();
         res.send(result);
     })
+    // Get User Data that role is ADMIN or NOT
+    app.get('/user/admin/:email',verifyToken,async (req,res)=>{
+      let admin = false;
+      const email = req.params.email;
+      if(email !== req.decoded.email){
+        return res.status(403).send({message:'Forbidden Access!'})
+      }
+      const filter = { email };
+      const user = await usersCollection.findOne(filter);
+      if(user){
+        admin = user?.role === 'admin';
+      }
+      res.send({admin});
+    })
+    // Add New User
     app.post('/users',async (req,res)=>{
       const user = req.body;
       const userModified = {...user,role:'user'};
@@ -75,7 +128,7 @@ async function run() {
       res.send(result);
     })
     // Change Role : Admin / User
-    app.patch('/users/role/:id',async (req,res)=>{
+    app.patch('/users/role/:id', verifyToken, verifyAdmin, async (req,res)=>{
       const id = req.params.id;
       const { role } = req.body;
       const filter = {_id : new ObjectId(id)}
@@ -87,7 +140,7 @@ async function run() {
       res.send(result);
     })
     // Delete API
-    app.delete('/users/:id',async (req,res)=>{
+    app.delete('/users/:id', verifyToken, verifyAdmin, async (req,res)=>{
       const id = req.params.id;
       const query = {_id : new ObjectId(id)}
       const result = await usersCollection.deleteOne(query);
@@ -100,10 +153,19 @@ async function run() {
         const result = await menuCollection.find().toArray();
         res.send(result);
     })
+    app.post('/menu',verifyToken,verifyAdmin,async (req,res)=>{
+      
+      const item = req.body;
+      const result = await menuCollection.insertOne(item);
+      console.log('New Item Added');
+      res.send(result);
+    })
+    // Reviews
     app.get('/reviews',async (req,res)=>{
         const result = await reviewsCollection.find().toArray();
         res.send(result);
     })
+    // Carts
     app.get('/carts',async (req,res)=>{
       const email = req.query.email;
       const query = {email}
