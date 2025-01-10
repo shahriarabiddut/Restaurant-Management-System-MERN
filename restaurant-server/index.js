@@ -153,11 +153,45 @@ async function run() {
         const result = await menuCollection.find().toArray();
         res.send(result);
     })
+    // Get Menu Item
+    app.get('/menu/:id',async (req,res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await menuCollection.findOne(query);
+      console.log('Item Found :',id);
+      res.send(result);
+    })
+    // Add Menu Item
     app.post('/menu',verifyToken,verifyAdmin,async (req,res)=>{
-      
       const item = req.body;
       const result = await menuCollection.insertOne(item);
       console.log('New Item Added');
+      res.send(result);
+    })
+     // Update Menu Item
+    app.patch('/menu/:id', verifyToken, verifyAdmin, async (req,res)=>{
+      const id = req.params.id;
+      const item = req.body;
+      const filter = {_id : new ObjectId(id)}
+      const updatedUserInfo = {
+        $set: {
+          name:item.name,
+          category:item.category,
+          price:item.price,
+          recipe:item.recipe,
+          image:item.image,
+        }
+      };
+      const result = await menuCollection.updateOne(filter,updatedUserInfo);
+      console.log(`Updated Item ${id}`);
+      res.send(result);
+    })
+    // Delete Menu Item
+    app.delete('/menu/:id', verifyToken, verifyAdmin, async (req,res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await menuCollection.deleteOne(query);
+      console.log('Item deleted!')
       res.send(result);
     })
     // Reviews

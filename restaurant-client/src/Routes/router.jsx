@@ -12,6 +12,9 @@ import Cart from "../Pages/Dashboard/User/Cart/Cart";
 import AllUsers from "../Pages/Dashboard/Admin/AllUsers/AllUsers";
 import AdminRoute from "./AdminRoute";
 import AddItems from "../Pages/Dashboard/Items/AddItems";
+import ManageItems from "../Pages/Dashboard/Items/ManageItems";
+import UpdateItem from "../Pages/Dashboard/Items/UpdateItem";
+import Payment from "../Pages/Dashboard/User/Payment/Payment";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,10 @@ const router = createBrowserRouter([
         element: <h1>Payment History</h1>,
       },
       {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
         path: "cart",
         element: <Cart />,
       },
@@ -103,6 +110,24 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddItems />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "updateItem/:id",
+        element: (
+          <AdminRoute>
+            <UpdateItem />
+          </AdminRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_URL}/menu/${params.id}`),
+      },
+      {
+        path: "manageItems",
+        element: (
+          <AdminRoute>
+            <ManageItems />
           </AdminRoute>
         ),
       },
