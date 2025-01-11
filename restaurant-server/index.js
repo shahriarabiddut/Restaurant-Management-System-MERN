@@ -3,10 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const stripe = require('stripe')(process.env.STRIPESECRET);
 // Variables
 const port = process.env.PORT || 3000;
-const secret = process.env.JWTSECRET || '7d6156787bbbc8678e6a1b7be51f4b776814798fd4ed827f0d6d5cb108cb7b58f16170c8700b7b1371d3174210535356279112bae8496e332da8f6acbf511631';
-
+const secret = process.env.JWTSECRET;
 // App
 const app = express();
 
@@ -40,6 +40,7 @@ async function run() {
     const menuCollection = database.collection("menu");
     const reviewsCollection = database.collection("reviews");
     const cartsCollection = database.collection("carts");
+    const paymentsCollection = database.collection("payments");
 
     // JWT RELATED API
     app.post('/jwt',async (req,res)=>{
@@ -218,7 +219,42 @@ async function run() {
       console.log('Item deleted from cart!')
       res.send(result);
     })
-    
+    // Payment Related APIS
+    // Get Payment History 
+    app.get('/payments/:email',verifyToken,async (req,res)=>{
+        const email = req.params.email;
+        if(email !== req.decoded.email){
+          return res.status(403).send({message:'Forbidden Access!'})
+        }
+        const result = await paymentsCollection.find().toArray();
+        res.send(result);
+    })
+    //  Save Payments
+    app.post('/payments',verifyToken,async(req,res)=>{
+      const payment = req.body;
+      const result = await paymentsCollection.insertOne(payment);
+      // delete each item from cart 
+      const query = { _id: {
+        $in: payment.cartIds.map(id=> new ObjectId(id))
+      }}
+      const deleteResult = await cartsCollection.deleteMany(query);
+      // 
+      console.log('Payment Saved! ', payment)
+      res.send({result,deleteResult});
+    })
+    // Payment Intent - Stripe
+    app.post('/create-payment-intent',async(req,res)=>{
+      const {price} = req.body;
+      const amount = parseInt(price * 100);
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount : amount,
+        currency: 'usd',
+        payment_method_types: ['card']
+      })
+      res.send({
+        clientSecret: paymentIntent.client_secret
+      })
+    })
 
   } finally {
     // Ensures that the client will close when you finish/error
@@ -226,8 +262,8 @@ async function run() {
   }
 }
 run().catch(console.dir);
-// MongoDB Ends
+// MongoDB Ends 
 
 // Initial Setup
 app.get('/', (req,res)=>{res.send(`Restaurant Server is Running!`)})
-app.listen(port, ()=>{console.log(`Restaurant Server is Running on Port : ${port}`)})
+app.listen(port, ()=>{console.log(`Restaurant Server is Running on Port : ${port}`)}) 

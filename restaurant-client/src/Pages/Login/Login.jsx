@@ -124,7 +124,8 @@ const Login = () => {
               <small>
                 New Here ?
                 <Link to={"/signup"} className="font-bold">
-                  Create A New Account
+                  {" "}
+                  &nbsp; Create A New Account
                 </Link>
               </small>
             </p>

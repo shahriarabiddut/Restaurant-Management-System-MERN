@@ -15,6 +15,7 @@ import AddItems from "../Pages/Dashboard/Items/AddItems";
 import ManageItems from "../Pages/Dashboard/Items/ManageItems";
 import UpdateItem from "../Pages/Dashboard/Items/UpdateItem";
 import Payment from "../Pages/Dashboard/User/Payment/Payment";
+import PaymentHistory from "../Pages/Dashboard/User/Payment/PaymentHistory";
 
 const router = createBrowserRouter([
   {
@@ -69,7 +70,7 @@ const router = createBrowserRouter([
       },
       {
         path: "payments",
-        element: <h1>Payment History</h1>,
+        element: <PaymentHistory />,
       },
       {
         path: "payment",

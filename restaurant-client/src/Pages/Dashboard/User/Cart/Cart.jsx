@@ -69,7 +69,7 @@ const Cart = () => {
               {/* row 1 */}
               {cart.map((item) => (
                 <tr key={item._id}>
-                  <td>{i++}</td>
+                  <td>{i++}.</td>
                   <td>
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12">

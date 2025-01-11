@@ -57,7 +57,7 @@ const ManageItems = () => {
               {/* row 1 */}
               {menu.map((item, index) => (
                 <tr key={item._id}>
-                  <td>{index + 1}</td>
+                  <td>{index + 1}.</td>
                   <td>
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12">

@@ -13,9 +13,11 @@ import { MdRateReview } from "react-icons/md";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
+import useCart from "../hooks/useCart";
 
 const Dashboard = () => {
   const [isAdmin] = useAdmin();
+  const [cart] = useCart();
   return (
     <section className="flex bg-base-200 ">
       <div className="w-64 min-h-screen bg-primer">
@@ -67,7 +69,7 @@ const Dashboard = () => {
               </li>
               <li className="text-xl">
                 <NavLink to={"/dashboard/cart"}>
-                  <FaShoppingCart /> My Cart
+                  <FaShoppingCart /> My Cart ({cart.length})
                 </NavLink>
               </li>
               <li className="text-xl">
