@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../providers/AuthProvider";
+import React from "react";
 import { FaCartShopping } from "react-icons/fa6";
+import { Link, NavLink } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut } = useAuth();
+  const [isAdmin] = useAdmin();
   const handleLogout = () => {
     logOut()
       .then(() => console.log("Logged Out"))
@@ -23,11 +25,22 @@ const Navbar = () => {
       <li>
         <NavLink to={"/order/salad"}>Order</NavLink>
       </li>
-      {user ? (
+      {user && isAdmin && (
         <>
           <li>
-            <NavLink to={"/secret"}>Secret</NavLink>
+            <NavLink to={"/dashboard/adminHome"}>Dashboard</NavLink>
           </li>
+        </>
+      )}
+      {user && !isAdmin && (
+        <>
+          <li>
+            <NavLink to={"/dashboard/home"}>Dashboard</NavLink>
+          </li>
+        </>
+      )}
+      {user ? (
+        <>
           <li>
             <span className="bg-slate-400 mx-1">{user?.displayName}</span>
           </li>

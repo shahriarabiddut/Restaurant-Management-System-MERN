@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -61,6 +62,7 @@ const UpdateItem = () => {
         category: data.category,
         price: parseFloat(data.price),
         recipe: data.recipe,
+        image: image,
       };
       //   Now Send the Data
       const menuRes = await axiosSecure.patch(`/menu/${_id}`, menuItem);
@@ -74,10 +76,22 @@ const UpdateItem = () => {
           timer: 1500,
         });
       }
+      if (menuRes.data.modifiedCount == 0 && menuRes.data.matchedCount > 0) {
+        Swal.fire({
+          position: "top-end",
+          icon: "info",
+          title: "Nothing New To Update!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     }
   };
   return (
     <>
+      <Helmet>
+        <title>Update Item | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle subHeading={"Whats To Change"} heading={"UPDATE ITEM"} />
       <section className="p-5 w-full md:w-10/12 bg-gray-200 mx-auto my-5">
         <form onSubmit={handleSubmit(onSubmit)} className="card-body py-5">

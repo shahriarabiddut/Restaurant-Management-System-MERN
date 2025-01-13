@@ -6,6 +6,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useMenu from "../../../hooks/useMenu";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const ManageItems = () => {
   const [menu, loading, refetch] = useMenu();
@@ -36,6 +37,9 @@ const ManageItems = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Manage Item | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle subHeading={"Hurry Up"} heading={"MANAGE ALL ITEMS"} />
       <section className="p-5 w-full md:w-10/12 bg-white mx-auto my-5">
         <div className="flex justify-between my-4 font-cinzel font-semibold">

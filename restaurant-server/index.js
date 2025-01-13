@@ -255,6 +255,52 @@ async function run() {
         clientSecret: paymentIntent.client_secret
       })
     })
+    // Analytics Admin
+    app.get('/admin-stats',verifyToken,verifyAdmin,async (req,res)=>{
+      const users = await usersCollection.estimatedDocumentCount();
+      const menuItems = await menuCollection.estimatedDocumentCount();
+      const orders = await paymentsCollection.estimatedDocumentCount();
+      // Revenue
+      // _id: "$customerId", if given ,it does Group by the value of "customerId" else it does not group by any specific key
+      const payment = await paymentsCollection.aggregate([
+                        {$group: {_id:null,totalRevenue:{$sum:"$price"}}  }
+                      ]).toArray();
+      const revenue =  payment[0]?.totalRevenue.toFixed(2) || 0;
+      // 
+      res.send({users,menuItems,orders,revenue});
+    })
+    // Aggregate Pipeline - Analytics 
+    app.get('/order-stats',verifyToken,verifyAdmin,async (req,res)=>{
+      const result = await paymentsCollection.aggregate([
+        {$unwind:'$menuItemIds'},
+        { $set: { menuItemIds: { $toObjectId: '$menuItemIds' } } }, // Convert to ObjectId
+        {$lookup:{
+          from: 'menu',
+          localField: 'menuItemIds',
+          foreignField: '_id',
+          as: 'menuItems',
+        }},
+        {$unwind:'$menuItems'},
+        {$group:{
+          _id: '$menuItems.category',
+          quantity:{
+            $sum:1,
+          },
+          revenue:{
+            $sum:'$menuItems.price',
+          },
+        }},
+        {$project:{
+          _id:0,
+          category: '$_id',
+          quantity: '$quantity',
+          revenue: '$revenue',
+        }}
+      ]).toArray();
+
+      // 
+      res.send(result);
+    })
 
   } finally {
     // Ensures that the client will close when you finish/error

@@ -5,6 +5,7 @@ import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Cart = () => {
   const [cart, refetch] = useCart();
@@ -39,6 +40,9 @@ const Cart = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>My Cart | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle subHeading={"My Cart"} heading={"WANNA ADD MORE?"} />
       <section className="p-5 w-full md:w-10/12 bg-white mx-auto my-5">
         <div className="flex justify-between my-4 font-cinzel font-semibold">

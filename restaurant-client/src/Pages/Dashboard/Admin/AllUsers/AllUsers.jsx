@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import SectionTitle from "../../../../components/SectionTitle";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { FaUsers } from "react-icons/fa6";
+import { Helmet } from "react-helmet-async";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -99,6 +100,9 @@ const AllUsers = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>All Users | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle subHeading={"Users Data"} heading={"MANAGE ALL USERS"} />
       <section className="p-5 w-full md:w-10/12 bg-white mx-auto my-5">
         <div className="flex justify-between my-4 font-cinzel font-semibold">

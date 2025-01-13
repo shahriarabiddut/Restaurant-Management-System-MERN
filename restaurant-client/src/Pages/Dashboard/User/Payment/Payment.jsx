@@ -3,12 +3,16 @@ import SectionTitle from "../../../../components/SectionTitle";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import { Helmet } from "react-helmet-async";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUB_KEY);
 
 const Payment = () => {
   return (
     <>
+      <Helmet>
+        <title>Pay to Confirm Order | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle
         subHeading={"Please! Pay to confirm your orders!"}
         heading={"Payment"}

@@ -5,6 +5,7 @@ import { FaUtensils } from "react-icons/fa6";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -53,6 +54,9 @@ const AddItems = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Add Item | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle subHeading={"Whats New"} heading={"ADD NEW ITEM"} />
       <section className="p-5 w-full md:w-10/12 bg-gray-200 mx-auto my-5">
         <form onSubmit={handleSubmit(onSubmit)} className="card-body py-5">

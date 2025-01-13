@@ -3,6 +3,7 @@ import React from "react";
 import SectionTitle from "../../../../components/SectionTitle";
 import useAuth from "../../../../hooks/useAuth";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const PaymentHistory = () => {
   const axiosSecure = useAxiosSecure();
@@ -16,6 +17,9 @@ const PaymentHistory = () => {
   });
   return (
     <>
+      <Helmet>
+        <title>Payment History | {import.meta.env.VITE_NAME}</title>
+      </Helmet>
       <SectionTitle subHeading={"My Payment History"} heading={"PAYMENTS"} />
       <section className="p-5 w-full md:w-10/12 bg-white mx-auto my-5">
         <div className="flex justify-between my-4 font-cinzel font-semibold">
